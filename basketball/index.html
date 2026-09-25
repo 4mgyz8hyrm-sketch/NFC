@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Between the Lines — Basketball Quotes</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.9)),
+        url("https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=2400&q=80")
+        center / cover fixed;
+      color: #e8e8e8;
+      font-family: "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .06;
+      background:
+        radial-gradient(
+          circle at center,
+          transparent 0 20%,
+          white 20.1% 20.2%,
+          transparent 20.3%
+        );
+    }
+
+    .page {
+      width: min(1100px, 100%);
+      min-height: 100vh;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    header,
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-family: "Oswald", sans-serif;
+      font-size: 18px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .number {
+      color: #777;
+      font-family: "Oswald", sans-serif;
+      font-size: 13px;
+      letter-spacing: .15em;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      padding: 60px 0;
+    }
+
+    .quote-card {
+      width: min(760px, 100%);
+      padding: 64px 70px;
+      position: relative;
+
+      background: rgba(15,15,15,.84);
+      border: 1px solid rgba(255,255,255,.14);
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.7),
+        inset 0 1px 0 rgba(255,255,255,.05);
+
+      backdrop-filter: blur(12px);
+    }
+
+    .quote-mark {
+      position: absolute;
+      top: 40px;
+      left: 42px;
+
+      font-family: Georgia, serif;
+      font-size: 100px;
+      line-height: .5;
+      color: rgba(255,255,255,.1);
+    }
+
+    .quote {
+      position: relative;
+
+      font-family: "Oswald", sans-serif;
+      font-size: clamp(32px, 5vw, 54px);
+      line-height: 1.13;
+      font-weight: 400;
+    }
+
+    .author {
+      margin-top: 36px;
+      padding-top: 22px;
+
+      border-top: 1px solid rgba(255,255,255,.14);
+
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #777;
+
+      transition: opacity .18s ease;
+    }
+
+    .author span {
+      color: #eee;
+    }
+
+    .quote {
+      transition: opacity .18s ease;
+    }
+
+    .new-quote {
+      margin-top: 28px;
+      padding: 12px 20px;
+
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.28);
+      color: #ddd;
+
+      font-family: "Inter", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+
+      cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .new-quote:hover {
+      background: #fff;
+      color: #111;
+      border-color: #fff;
+    }
+
+    footer {
+      color: #666;
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .keep-playing {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .keep-playing::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: #666;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 28px 18px;
+      }
+
+      .quote-card {
+        padding: 50px 32px;
+      }
+
+      .quote-mark {
+        left: 20px;
+      }
+
+      .quote {
+        font-size: 34px;
+      }
+
+      footer {
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <header>
+      <div class="brand">Between the Lines</div>
+      <div class="number">Basketball Quotes</div>
+    </header>
+
+    <main>
+      <section class="quote-card">
+
+        <div class="quote-mark">“</div>
+
+        <div id="quote" class="quote">
+          Loading...
+        </div>
+
+        <div id="author" class="author">
+          — <span></span>
+        </div>
+
+        <button class="new-quote" onclick="newQuote()">
+          New Quote
+        </button>
+
+      </section>
+    </main>
+
+    <footer>
+      <div>Basketball / Words / Mindset</div>
+      <div class="keep-playing">Keep Playing</div>
+    </footer>
+
+  </div>
+
+  <script>
+    let quotes = [];
+    let lastQuote = -1;
+
+    async function loadQuotes() {
+      try {
+        const response = await fetch("quotes.json");
+        quotes = await response.json();
+
+        newQuote();
+      } catch (error) {
+        document.getElementById("quote").textContent =
+          "The game is won one possession at a time.";
+
+        document.getElementById("author").innerHTML =
+          "— <span>Unknown</span>";
+      }
+    }
+
+    function newQuote() {
+      if (!quotes.length) return;
+
+      let randomIndex;
+
+      do {
+        randomIndex = Math.floor(Math.random() * quotes.length);
+      } while (
+        randomIndex === lastQuote &&
+        quotes.length > 1
+      );
+
+      lastQuote = randomIndex;
+
+      const quoteElement = document.getElementById("quote");
+      const authorElement = document.getElementById("author");
+
+      quoteElement.style.opacity = "0";
+      authorElement.style.opacity = "0";
+
+      setTimeout(() => {
+        quoteElement.textContent = quotes[randomIndex].quote;
+
+        authorElement.innerHTML =
+          `— <span>${quotes[randomIndex].player}</span>`;
+
+        quoteElement.style.opacity = "1";
+        authorElement.style.opacity = "1";
+      }, 180);
+    }
+
+    loadQuotes();
+  </script>
+
+</body>
+</html>
