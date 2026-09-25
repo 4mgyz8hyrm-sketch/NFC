@@ -49,34 +49,12 @@
       padding: 40px 24px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-    }
-
-    header,
-    footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand {
-      font-family: "Oswald", sans-serif;
-      font-size: 18px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    .number {
-      color: #777;
-      font-family: "Oswald", sans-serif;
-      font-size: 13px;
-      letter-spacing: .15em;
+      justify-content: center;
     }
 
     main {
       display: flex;
       justify-content: center;
-      padding: 60px 0;
     }
 
     .quote-card {
@@ -136,50 +114,6 @@
       transition: opacity .18s ease;
     }
 
-    .new-quote {
-      margin-top: 28px;
-      padding: 12px 20px;
-
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.28);
-      color: #ddd;
-
-      font-family: "Inter", sans-serif;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-
-      cursor: pointer;
-      transition: .25s ease;
-    }
-
-    .new-quote:hover {
-      background: #fff;
-      color: #111;
-      border-color: #fff;
-    }
-
-    footer {
-      color: #666;
-      font-size: 9px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-    }
-
-    .keep-playing {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .keep-playing::before {
-      content: "";
-      width: 28px;
-      height: 1px;
-      background: #666;
-    }
-
     @media (max-width: 600px) {
       .page {
         padding: 28px 18px;
@@ -197,9 +131,6 @@
         font-size: 34px;
       }
 
-      footer {
-        font-size: 8px;
-      }
     }
   </style>
 </head>
@@ -207,11 +138,6 @@
 <body>
 
   <div class="page">
-
-    <header>
-      <div class="brand">Between the Lines</div>
-      <div class="number">Basketball Quotes</div>
-    </header>
 
     <main>
       <section class="quote-card">
@@ -226,23 +152,32 @@
           — <span></span>
         </div>
 
-        <button class="new-quote" onclick="newQuote()">
-          New Quote
-        </button>
-
       </section>
     </main>
-
-    <footer>
-      <div>Basketball / Words / Mindset</div>
-      <div class="keep-playing">Keep Playing</div>
-    </footer>
 
   </div>
 
   <script>
+    const backgroundImages = [
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=2400&q=80",
+      "https://images.unsplash.com/photo-1518407613690-d9fc990e795f?auto=format&fit=crop&w=2400&q=80",
+      "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=2400&q=80",
+      "https://images.unsplash.com/photo-1519861531473-9200262188bf?auto=format&fit=crop&w=2400&q=80",
+      "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=2400&q=80&sat=-20",
+      "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=2400&q=80"
+    ];
+
     let quotes = [];
     let lastQuote = -1;
+
+    function setRandomBackground() {
+      const image = backgroundImages[
+        Math.floor(Math.random() * backgroundImages.length)
+      ];
+
+      document.body.style.backgroundImage =
+        `linear-gradient(rgba(0,0,0,.72), rgba(0,0,0,.9)), url("${image}")`;
+    }
 
     async function loadQuotes() {
       try {
@@ -290,6 +225,7 @@
       }, 180);
     }
 
+    setRandomBackground();
     loadQuotes();
   </script>
 
