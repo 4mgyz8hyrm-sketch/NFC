@@ -33,9 +33,21 @@
                     #d5e9e5 70%,
                     #bde4dc 100%
                 );
+            background-size: 180% 180%;
+            animation: pastel-drift 28s ease-in-out infinite alternate;
 
             font-family: 'Cormorant Garamond', Georgia, serif;
             color: #3f4a49;
+        }
+
+        @keyframes pastel-drift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
         }
 
         .card {
@@ -107,6 +119,12 @@
             .small {
                 font-size: 11px;
                 letter-spacing: 3px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body {
+                animation: none;
             }
         }
     </style>
